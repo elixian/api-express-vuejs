@@ -1,0 +1,10 @@
+const mongoose = require('mongoose');
+const config = require('config');
+const winston = require('winston')
+
+module.exports = () => {
+    const connectionString = `mongodb://${config.get('db.host')}:${config.get('db.port')}/${config.get('db.dbName')}`;
+
+    mongoose.connect(connectionString)
+        .then(() => winston.info(`Connected to MongoDB... ${connectionString}`));
+}
