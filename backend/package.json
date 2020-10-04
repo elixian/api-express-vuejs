@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --watchAll --detectOpenHandles --forceExit"
+    "test": "jest --watchAll --detectOpenHandles --forceExit",
+    "start-db": "mongod --quiet &",
+    "dev" : "nodemon"
   },
   "keywords": [],
   "author": "",
