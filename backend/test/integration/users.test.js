@@ -9,7 +9,7 @@ describe('/api/users', () => {
     })
     afterEach(async () => {
         server.close();
-        await User.remove({});
+        await User.deleteMany({});
     })
     describe('GET /', () => {
         it('should return users ', async () => {
@@ -83,15 +83,19 @@ describe('/api/users', () => {
                 email: "mytest@api.com",
                 password: "5689gdgf"
             });
-           await user.save();
-            const res = await request(server).put(`/api/users/${user._id}`).send({password : '7897987979'})
-                .expect(201).then(async (response)=>{
+            await user.save();
+            const res = await request(server).put(`/api/users/${user._id}`).send({
+                    password: '7897987979'
+                })
+                .expect(201).then(async (response) => {
                     expect(response.body.password).toBe('7897987979')
-                }); 
+                });
 
         });
         it('SHOULD return 400 error with invalid id ', async () => {
-             await request(server).put(`/api/users/1`).send({password : '7897987979'})
+            await request(server).put(`/api/users/1`).send({
+                    password: '7897987979'
+                })
                 .expect(400);
 
         });
@@ -100,9 +104,42 @@ describe('/api/users', () => {
                 email: "mytest@api.com",
                 password: "5689gdgf"
             });
-           await user.save();
-             await request(server).put(`/api/users/${user._id - 1}`).send({password : '7897987979'})
+            await user.save();
+            await request(server).put(`/api/users/${user._id - 1}`).send({
+                    password: '7897987979'
+                })
                 .expect(400);
+
+        });
+    });
+    describe('DELETE /:id', () => {
+        it('SHOULD return 400 error with invalid id ', async () => {
+            await request(server).put(`/api/users/1`)
+                .expect(400);
+
+        });
+        it('SHOULD return 400 error with right id format and user not in db ', async () => {
+            let user = new User({
+                email: "mytest@api.com",
+                password: "5689gdgf"
+            });
+            await user.save();
+            await request(server).delete(`/api/users/${user._id - 1}`)
+                .expect(400);
+
+        });
+        it('SHOULD delete  user ', async () => {
+
+            let user = new User({
+                email: "mytest@api.com",
+                password: "5689gdgf"
+            });
+            await user.save();
+            const res = await request(server).delete(`/api/users/${user._id}`)
+                .expect(201).then(async (response) => {
+
+                    expect(response.text).toBe('ok')
+                });
 
         });
     })

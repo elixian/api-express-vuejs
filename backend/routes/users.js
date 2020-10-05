@@ -32,7 +32,7 @@ router.post('/', async (req, res)=>{
 
 router.put('/:id',vaildateObjectId, async (req, res)=>{
     
-    const user = await  User.findByIdAndUpdate({_id: req.params.id}, {
+    const user = await  User.findOneAndUpdate({_id: req.params.id}, {
         password : req.body.password,
         }, {
             new: true
@@ -40,7 +40,15 @@ router.put('/:id',vaildateObjectId, async (req, res)=>{
         if(err) return  res.status(400).send(`erreur sur le format : ${error.message}`)
     });
     res.status(201).send(user);
-})
+});
+
+router.delete('/:id',vaildateObjectId, async (req, res)=>{
+    
+    const user = await  User.deleteOne({_id: req.params.id}).catch(err =>{
+        if(err) return  res.status(400).send(`impossible de supprimer : ${error.message}`)
+    });
+    res.status(201).send('ok');
+});
 
 
 module.exports= router
