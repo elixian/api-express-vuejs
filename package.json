@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve-vue": "yarn  --cwd ./front-end serve"
+    "serve-vue": "yarn  --cwd ./front-end serve --silent",
+    "serve-api":"yarn --cwd ./backend dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC"
 
- 
 }
